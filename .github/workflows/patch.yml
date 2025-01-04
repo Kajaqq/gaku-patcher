@@ -7,7 +7,8 @@ on:
   push:
 
 permissions:
-  contents: read
+  contents: write
+  
 jobs:
   build:
    
