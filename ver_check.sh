@@ -9,6 +9,7 @@ LATEST_SHA=$(git rev-list --tags --max-count=1)
 
 echo "APK_VERSION=$apk_version" >> "$GITHUB_ENV"
 
-echo "$LATEST_SHA"
-echo "$LATEST_TAG"
-echo "$apk_version"
+echo "Latest tag: $LATEST_TAG"
+echo "Latest app version: $apk_version"
+
+test $LATEST_TAG = $apk_version && echo 'Tag equals latest version, canceling.' && exit 1
