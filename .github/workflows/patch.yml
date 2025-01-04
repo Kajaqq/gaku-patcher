@@ -43,13 +43,7 @@ jobs:
     - name: Download and patch
       run: |
         bash patch.sh
-
-    # - name: Upload patched file
-    #   uses: actions/upload-artifact@v4.5.0
-    #   with:
-    #     name: ${{ env.PATCHED_APK }}
-    #     path: ${{ env.PATCHED_APK }}
-
+        
     - name: Create a Release
       uses: softprops/action-gh-release@v2
       with:
