@@ -43,11 +43,19 @@ jobs:
       run: |
         bash patch.sh
 
-    - name: Upload patched file
-      uses: actions/upload-artifact@v4.5.0
+    # - name: Upload patched file
+    #   uses: actions/upload-artifact@v4.5.0
+    #   with:
+    #     name: ${{ env.PATCHED_APK }}
+    #     path: ${{ env.PATCHED_APK }}
+
+    - name: Create a Release
+      uses: softprops/action-gh-release@v2
       with:
-        name: ${{ env.PATCHED_APK }}
-        path: ${{ env.PATCHED_APK }}
+        body: "Gakuen iDOLM@STER ${{ env.APK_VERSION }} ready to update."
+        tag_name: ${{ env.APK_VERSION }} 
+        make_latest: true
+        files: ${{ env.PATCHED_APK }}
       
         
     
