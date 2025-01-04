@@ -42,7 +42,6 @@ class APKComboInfo:
             # Find XAPK download URL
             xapk_url_start = html_content.find('<ul class="file-list">')
             xapk_url_start = html_content.find('href=', xapk_url_start)
-
             while xapk_url_start != -1:
                 xapk_url_end = html_content.find('"', xapk_url_start + len('href="'))
                 temp_url = requests.utils.unquote(html_content[xapk_url_start + len('href="'):xapk_url_end])
@@ -77,6 +76,6 @@ if __name__ == "__main__":
     xapk_version = apk_info.xapk_version
 
     if xapk_url:
-            print(xapk_version+'\n'+xapk_url)
+            print(xapk_version+xapk_url)
     else:
         print("Failed to retrieve XAPK download URL or XAPK not found.")

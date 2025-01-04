@@ -2,11 +2,9 @@
 
 var=$(python ./get_gakumas_xapk.py)
 
-var_nospace=${var//[[:space:]]/}
+apk_version=${var%https*}
 
-apk_version=${var_nospace%https*}
-
-apk_link=${var_nospace#$apk_version*}
+apk_link=${var#$apk_version*}
 
 file=Gakuen_iDOLM@STER_$apk_version
 
@@ -20,8 +18,9 @@ java -jar APKEditor.jar m -i $xapk_name -o $apk_name
 
 java -jar lspatch.jar -l 2 --manager $apk_name
 
-rm -f $xapk_name $apk_name $merged_apk
+rm -f $xapk_name $apk_name 
 
 patched_apk=$(find *patched.apk)
 
-echo FILE PATCHED, VERSION: $apk_version, PATCHED FILE NAME: $patched_apk
+echo "PATCHED_APK=$patched_apk" >> "$GITHUB_ENV"
+echo "APK_VERSION=$apk_version" >> "$GITHUB_ENV"
