@@ -12,4 +12,4 @@ echo "APK_VERSION=$apk_version" >> "$GITHUB_ENV"
 echo "Latest tag: $LATEST_TAG"
 echo "Latest app version: $apk_version"
 
-test $LATEST_TAG = $apk_version && echo 'Tag equals latest version, canceling.' && exit 1
+test $LATEST_TAG != $apk_version 
