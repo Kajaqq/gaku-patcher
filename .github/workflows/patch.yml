@@ -47,7 +47,7 @@ jobs:
     - name: Create a Release
       uses: softprops/action-gh-release@v2
       with:
-        body: "Gakuen iDOLM@STER ${{ env.APK_VERSION }} ready to update."
+        body: "Gaku ${{ env.APK_VERSION }} ready to update."
         tag_name: ${{ env.APK_VERSION }} 
         make_latest: true
         files: ${{ env.PATCHED_APK }}

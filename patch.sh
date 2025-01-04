@@ -6,7 +6,7 @@ apk_version=${var%https*}
 
 apk_link=${var#$apk_version*}
 
-file=Gakuen_iDOLM@STER_$apk_version
+file=Gaku_$apk_version
 
 xapk_name=$file.xapk
 
