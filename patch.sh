@@ -4,7 +4,7 @@ var=$(python ./get_gakumas_xapk.py)
 
 apk_version=${var%https*}
 
-apk_link=${var#$apk_version*}
+apk_link=https://d.apkpure.com/b/XAPK/com.bandainamcoent.idolmaster_gakuen?version=latest
 
 file=Gaku_$apk_version
 
