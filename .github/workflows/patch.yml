@@ -50,7 +50,9 @@ jobs:
         body: "Gaku ${{ env.APK_VERSION }} ready to update."
         tag_name: ${{ env.APK_VERSION }} 
         make_latest: true
-        files: ${{ env.PATCHED_APK }}
+        files: |
+          ${{ env.PATCHED_APK }}
+          ${{ env.EMBED_APK }}
       
         
     
