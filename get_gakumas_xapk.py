@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import sys
 from typing import Any
 
 import requests
@@ -39,18 +38,20 @@ class APKComboInfo:
             response.raise_for_status()
             html_content = response.text
 
-            # Find XAPK download URL
-            xapk_url_start = html_content.find('<ul class="file-list">')
+            # Find the download URL location
+            xapk_url_start = html_content.find('<ul class="file-list">') 
             xapk_url_start = html_content.find('href=', xapk_url_start)
             while xapk_url_start != -1:
+                # Find the end of the url candidate
                 xapk_url_end = html_content.find('"', xapk_url_start + len('href="'))
                 temp_url = requests.utils.unquote(html_content[xapk_url_start + len('href="'):xapk_url_end])
-                if '.xapk' in temp_url:
+                #If it contains 'd?', that's our download link
+                if 'd?' in temp_url:
                     xapk_download_url = temp_url
                     break
                 xapk_url_start = html_content.find('href=', xapk_url_end)
             else:
-                return None # No XAPK found
+                raise requests.exceptions.RequestException # No XAPK found
 
             # Add checkin parameter to the download URL
             checkin_param = _get_checkin_param()
@@ -58,9 +59,10 @@ class APKComboInfo:
                 xapk_download_url += '&' + checkin_param
 
             # Get version of app
-            version_string_start = xapk_download_url.find('1.')
-            version_string_end = xapk_download_url.find('_apkcombo.app.xapk')
-            version_string = xapk_download_url[version_string_start:version_string_end]
+            version_text = 'Version:'
+            version_string_start = html_content.find(version_text) + len(version_text)+1
+            version_string_end = html_content.find(' - com.bandainamcoent.idolmaster_gakuen')
+            version_string = html_content[version_string_start:version_string_end]
 
             return xapk_download_url, version_string
 
