@@ -32,33 +32,37 @@ class APKComboInfo:
 
         Returns:
             str: The XAPK download URL or None if not found.
-        """
+       """
+       
         try:
             response = requests.get(self.apkcombo_url, timeout=10)
             response.raise_for_status()
             html_content = response.text
 
-            # Find the download URL location
-            xapk_url_start = html_content.find('<ul class="file-list">') 
-            xapk_url_start = html_content.find('href=', xapk_url_start)
-            while xapk_url_start != -1:
-                # Find the end of the url candidate
-                xapk_url_end = html_content.find('"', xapk_url_start + len('href="'))
-                temp_url = requests.utils.unquote(html_content[xapk_url_start + len('href="'):xapk_url_end])
-                #If it contains 'd?', that's our download link
-                if 'd?' in temp_url:
-                    xapk_download_url = temp_url
-                    break
-                xapk_url_start = html_content.find('href=', xapk_url_end)
-            else:
-                raise requests.exceptions.RequestException # No XAPK found
+            # # Find the download URL location
+            # xapk_url_start = html_content.find('<div class="download-content"') 
+            # xapk_url_start = html_content.find('href=', xapk_url_start) + len('href="')
+            # while xapk_url_start != -1:
+            #     # Find the end of the url candidate
+            #     xapk_url_end = html_content.find('"', xapk_url_start)
+            #     temp_url = requests.utils.unquote(html_content[xapk_url_start:xapk_url_end])
+            #     #If it contains the game ID, that's our download link
+            #     if 'com.bandainamcoent.idolmaster_gakuen' in temp_url:
+            #         xapk_download_url = temp_url
+            #         break
+            #     xapk_url_start = html_content.find('href=', xapk_url_end)
+            # else:
+            #     raise requests.exceptions.RequestException # No XAPK found
 
-            # Add checkin parameter to the download URL
-            checkin_param = _get_checkin_param()
-            if checkin_param:
-                xapk_download_url += '&' + checkin_param
+            # # Add checkin parameter to the download URL
+            # checkin_param = _get_checkin_param()
+            # if checkin_param:
+            #     xapk_download_url += '&' + checkin_param
 
-            # Get version of app
+
+            # The URL can be hard-coded as it seems to always point to the latest release, and dynamically updating it would probably require a web-driver
+            
+            xapk_download_url = 'https://d.apkpure.com/b/XAPK/com.bandainamcoent.idolmaster_gakuen?version=latest'
             version_text = 'Version:'
             version_string_start = html_content.find(version_text) + len(version_text)+1
             version_string_end = html_content.find(' - com.bandainamcoent.idolmaster_gakuen')
