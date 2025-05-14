@@ -33,7 +33,9 @@ class APKComboInfo:
             str: The XAPK download URL or None if not found.
         """
         try:
-            response = requests.get(self.apkcombo_url,impersonate="chrome")
+            response = requests.get(self.apkcombo_url,impersonate="safari_ios")
+            print("Status Code: ",response.status_code)
+            print(response.headers)
             html_content = response.text
             # Find the file list
             xapk_file_list = html_content.find('<ul class="file-list">') 
