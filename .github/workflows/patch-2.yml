@@ -21,7 +21,7 @@ jobs:
 
     - name: Get latest tag and compare with existing
       run: |
-          wget -S -U "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0" https://d.apkpure.com/b/XAPK/com.bandainamcoent.idolmaster_gakuen?version=latest
+          wget -q -S -U "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0" --start-pos 999999999999 https://d.apkpure.com/b/XAPK/com.bandainamcoent.idolmaster_gakuen?version=latest -O /dev/null
           
       
         
