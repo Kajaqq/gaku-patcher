@@ -1,5 +1,8 @@
 name: Download and patch-test
 
+env:
+  XAPK_LINK: "https://d.apkpure.com/b/XAPK/com.bandainamcoent.idolmaster_gakuen?version=latest"
+  USER_AGENT: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"
 on:
   schedule:
     - cron: 0 0 * * *
@@ -18,10 +21,10 @@ jobs:
     - uses: actions/checkout@v4
       with: 
         fetch-depth: 0
-
     - name: Get latest tag and compare with existing
       run: |
-          wget -q -S -U "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0" --start-pos 999999999999 https://d.apkpure.com/b/XAPK/com.bandainamcoent.idolmaster_gakuen?version=latest -O /dev/null
+          bash ver_check.sh
+    
           
       
         
