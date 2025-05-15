@@ -1,15 +1,10 @@
 #!/bin/bash
 
-var=$(python ./get_gakumas_xapk.py)
+apk_link=$XAPK_LINK
 
-apk_version=${var%https*}
-
-apk_link=${var#$apk_version*}
-
-file=Gaku_$apk_version
+file=Gaku_$APK_VERSION
 
 xapk_name=$file.xapk
-
 apk_name=$file.apk
 
 aria2c -j16 $apk_link -o $xapk_name
@@ -31,4 +26,3 @@ embed_apk=$(find *_embedded.apk)
 
 echo "PATCHED_APK=$patched_apk" >> "$GITHUB_ENV"
 echo "EMBED_APK=$embed_apk" >> "$GITHUB_ENV"
-echo "APK_VERSION=$apk_version" >> "$GITHUB_ENV"

@@ -11,7 +11,6 @@ apk_version=${xapk_name%_*};apk_version=${apk_version##*_}
 
 LATEST_TAG="$(git describe --tags "$(git rev-list --tags --max-count=1)")"
 
-echo "APK_NAME=$xapk_name" >> "$GITHUB_ENV"
 echo "APK_VERSION=$apk_version" >> "$GITHUB_ENV"
 
 echo "Latest tag: $LATEST_TAG"
