@@ -1,2 +1,0 @@
-curl_cffi
-PyYAML
