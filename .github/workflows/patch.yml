@@ -1,5 +1,7 @@
 name: Download and patch
-
+env:
+  XAPK_LINK: "https://d.apkpure.com/b/XAPK/com.bandainamcoent.idolmaster_gakuen?version=latest"
+  USER_AGENT: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"
 on:
   schedule:
     - cron: 0 0 * * *
@@ -17,18 +19,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with: 
-        fetch-depth: 0
-    
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.11"
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        
+        fetch-depth: 0        
     - name: Get latest tag and compare with existing
       run: |
           bash ver_check.sh
