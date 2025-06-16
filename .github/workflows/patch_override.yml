@@ -1,0 +1,49 @@
+name: Download and patch (Version override)
+env:
+  XAPK_LINK: "https://d.apkpure.com/b/XAPK/com.bandainamcoent.idolmaster_gakuen?version=latest"
+  USER_AGENT: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  
+jobs:
+  build:
+   
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - uses: actions/checkout@v4
+      with: 
+        fetch-depth: 0     
+
+    - name: Get latest tag and compare with existing 
+      continue-on-error: true
+      run: |
+          bash ver_check.sh
+          
+    - name: Set up JRE 21
+      uses: actions/setup-java@v4.6.0
+      with:
+          distribution: "zulu"
+          java-version: "21"
+          java-package: "jre"  
+          
+    - name: Download and patch
+      run: |
+        bash patch.sh
+        
+    - name: Create a Release
+      uses: softprops/action-gh-release@v2
+      with:
+        body: "Gaku ${{ env.APK_VERSION }} ready to update."
+        tag_name: ${{ env.APK_VERSION }} 
+        make_latest: true
+        files: |
+          ${{ env.PATCHED_APK }}
+          ${{ env.EMBED_APK }}
+      
+        
+    
