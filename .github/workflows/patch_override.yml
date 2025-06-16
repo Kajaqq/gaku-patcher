@@ -1,9 +1,12 @@
-name: Download and patch-manual
+name: Download and patch (Skip version check)
 env:
   XAPK_LINK: "https://d.apkpure.com/b/XAPK/com.bandainamcoent.idolmaster_gakuen?version=latest"
   USER_AGENT: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - lspatch_update
 
 permissions:
   contents: write
