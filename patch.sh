@@ -18,7 +18,7 @@ java -jar lspatch_embed.jar $apk_name -d -m module.apk
 rm -f $xapk_name $apk_name 
 
 patched_apk=$(find *430-lspatched.apk)
-embed_apk=$(find *426-lspatched.apk)
+embed_apk=$(find *433-lspatched.apk)
 
 mv $embed_apk "$file"_embedded.apk
 
