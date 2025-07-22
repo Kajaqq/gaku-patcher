@@ -24,7 +24,7 @@ mv "$embed_apk_cn" ./"$GAME_EMBEDDED_OLD"
 
 if [ -f "$GAME_CLONED_NAME" ] 
 then
-java -jar lspatch_embed.jar "$GAME_APK_NAME" -m "$LOCALIFY_EN_NAME" -o localify_cloned --force
+java -jar lspatch_embed.jar "$GAME_CLONED_NAME" -m "$LOCALIFY_EN_NAME" -o localify_cloned --force
 embed_apk_cloned=$(find ./localify_cloned/*.apk)
 mv "$embed_apk_cloned" ./"$GAME_EMBEDDED_CLONED"
 echo "EMBED_APK_CLONED=$GAME_EMBEDDED_CLONED" >> "$GITHUB_ENV"
