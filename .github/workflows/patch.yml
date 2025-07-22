@@ -43,7 +43,7 @@ jobs:
     - name: Create a Release
       uses: softprops/action-gh-release@v2
       with:
-        body: "Gaku ${{ env.APK_VERSION }} ready to update.\n The '_new' and 'cloned' apk require a new version of Localify to function.\NTo use them, download the included 'Localify.apk' if you did not already. \nOther Localify versions will NOT work."
+        body: "### Gaku ${{ env.APK_VERSION }} ready to update.\nThe '_new' and 'cloned' apk require a new version of Localify to function.\nTo use them, download the included 'Localify.apk' if you did not already. \n**Other Localify versions will NOT work.**"
         tag_name: ${{ env.APK_VERSION }} 
         make_latest: true
         files: |
