@@ -1,6 +1,6 @@
 #!/bin/bash
 
-headers=$(wget -q -S -U "$USER_AGENT" --start-pos 999999999 "$XAPK_LINK" 2>&1)
+headers=$(wget -q -S -U "$USER_AGENT" --start-pos 999999999 "$GAME_XAPK_LINK" 2>&1)
 
 xapk_name=${headers##*=}
 
