@@ -1,7 +1,6 @@
 #!/bin/bash
 
-LOCALIFY_CN_VER=$(curl -s https://api.github.com/repos/chinosk6/gakuen-imas-localify/releases | jq -r 'map(select(.prerelease)) | .[0].tag_name')
-LOCALIFY_CN_LINK=https://github.com/chinosk6/gakuen-imas-localify/releases/download/$LOCALIFY_CN_VER/app-release.apk
+LOCALIFY_CN_LINK=$(curl -s https://api.github.com/repos/chinosk6/gakuen-imas-localify/releases | jq -r '.[0].assets[] | select(.name | endswith(".apk")) | .browser_download_url')
 LOCALIFY_CN_NAME=LocalifyCN.apk
 LOCALIFY_EN_LINK=https://gitea.tendokyu.moe/Maji/gakumas-localify-en/releases/download/latest/Localify.apk
 LOCALIFY_EN_NAME=Localify.apk
