@@ -1,6 +1,6 @@
 name: Download and patch
 env:
-  XAPK_LINK: "https://d.apkpure.com/b/XAPK/com.bandainamcoent.idolmaster_gakuen?version=latest"
+  GAME_XAPK_LINK: "https://d.apkpure.com/b/XAPK/com.bandainamcoent.idolmaster_gakuen?version=latest"
   USER_AGENT: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"
 on:
   schedule:
@@ -23,6 +23,9 @@ jobs:
     - name: Get latest tag and compare with existing
       run: |
           bash ver_check.sh
+    - name: Download and prepare modules
+      run: |
+          bash download_modules.sh
           
     - name: Set up JRE 21
       uses: actions/setup-java@v4.6.0
@@ -30,20 +33,25 @@ jobs:
           distribution: "zulu"
           java-version: "21"
           java-package: "jre"  
-          
-    - name: Download and patch
+    - name: Prepare cloned APK file
+      run: |
+        bash clone.sh
+    - name: Patch the APK files
       run: |
         bash patch.sh
         
     - name: Create a Release
       uses: softprops/action-gh-release@v2
       with:
-        body: "Gaku ${{ env.APK_VERSION }} ready to update."
+        body: "Gaku ${{ env.APK_VERSION }} ready to update.\n The '_new' and 'cloned' apk require a new version of Localify to function.\NTo use them, download the included 'Localify.apk' if you did not already. \nOther Localify versions will NOT work."
         tag_name: ${{ env.APK_VERSION }} 
         make_latest: true
         files: |
-          ${{ env.PATCHED_APK }}
           ${{ env.EMBED_APK }}
+          ${{ env.EMBED_APK_CLONED }}
+          ${{ env.EMBED_APK_CN }}
+          ${{ env.LOCALIFY_EN_NAME }}
+          ${{ env.PATCHED_APK }}
       
         
     

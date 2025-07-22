@@ -1,28 +1,28 @@
 #!/bin/bash
 
-apk_link=$XAPK_LINK
+GAME_EMBEDDED_BASE="$GAME_FILE_BASE"_embedded
 
-file=Gaku_$APK_VERSION
+java -jar lspatch.jar -l 2 --manager "$GAME_APK_NAME" -o ls_patched
 
-xapk_name=$file.xapk
-apk_name=$file.apk
+java -jar lspatch_embed.jar "$GAME_APK_NAME" -m "$LOCALIFY_EN_NAME" -o localify --force
+java -jar lspatch_embed.jar "$GAME_APK_NAME" -m "$LOCALIFY_CN_NAME" -o localify_cn --force
 
-aria2c -j16 $apk_link -o $xapk_name
+patched_apk=$(find ./ls_patched/*.apk)
+embed_apk=$(find ./localify/*.apk)
+embed_apk_cn=$(find ./localify_cn/*.apk)
 
-java -jar APKEditor.jar m -i $xapk_name -o $apk_name
+mv "$embed_apk" ./"$GAME_EMBEDDED_BASE"_new.apk
+mv "$embed_apk_cn" ./"$GAME_EMBEDDED_BASE".apk
 
-java -jar lspatch.jar -l 2 --manager $apk_name
+{
+    echo "PATCHED_APK=$patched_apk";
+    echo "EMBED_APK=$embed_apk";
+    echo "EMBED_APK_CN=$embed_apk_cn";} >> "$GITHUB_ENV"
 
-java -jar lspatch_embed.jar $apk_name -d -m module.apk
-
-rm -f $xapk_name $apk_name 
-
-patched_apk=$(find *430-lspatched.apk)
-embed_apk=$(find *433-lspatched.apk)
-
-mv $embed_apk "$file"_embedded.apk
-
-embed_apk=$(find *_embedded.apk)
-
-echo "PATCHED_APK=$patched_apk" >> "$GITHUB_ENV"
-echo "EMBED_APK=$embed_apk" >> "$GITHUB_ENV"
+if [ -f "$GAME_CLONED_NAME" ] 
+then
+java -jar lspatch_embed.jar "$GAME_APK_NAME" -m "$LOCALIFY_EN_NAME" -o localify_cloned --force
+embed_apk_cloned=$(find ./localify_cloned/*.apk)
+mv "$embed_apk_cloned" ./"$GAME_EMBEDDED_BASE"_cloned.apk
+echo "EMBED_APK_CLONED=$embed_apk_cloned" >> "$GITHUB_ENV"
+fi
