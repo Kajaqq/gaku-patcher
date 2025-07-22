@@ -16,6 +16,7 @@ echo "Latest app version: $apk_version"
 if [ "$LATEST_TAG" != "$apk_version" ] 
 then
     {
+    echo "APK_VERSION=$apk_version";
     echo "GAME_FILE_BASE=$GAME_FILE_BASE";
     echo "GAME_XAPK_NAME=$GAME_FILE_BASE.xapk";
     echo "GAME_APK_NAME=$GAME_FILE_BASE.apk";
