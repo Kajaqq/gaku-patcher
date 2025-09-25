@@ -23,6 +23,7 @@ jobs:
     - name: Get latest tag and compare with existing
       run: |
           bash ver_check.sh
+
     - name: Download and prepare modules
       run: |
           bash download_modules.sh
@@ -33,9 +34,11 @@ jobs:
           distribution: "zulu"
           java-version: "21"
           java-package: "jre"  
+
     - name: Prepare cloned APK file
       run: |
         bash clone.sh
+
     - name: Patch the APK files
       run: |
         bash patch.sh
