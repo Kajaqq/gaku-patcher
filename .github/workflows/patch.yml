@@ -17,9 +17,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-      with: 
-        fetch-depth: 0        
+    - name: Checkout the repo
+      uses: actions/checkout@v5
+      with:
+        fetch-tags: true
+
     - name: Get latest tag and compare with existing
       run: |
           bash ver_check.sh
