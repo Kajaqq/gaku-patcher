@@ -20,6 +20,7 @@ jobs:
     - name: Checkout the repo
       uses: actions/checkout@v5
       with:
+        fetch-depth: 0
         fetch-tags: true
 
     - name: Get latest tag and compare with existing
