@@ -51,12 +51,13 @@ jobs:
         body: "### Gaku ${{ env.APK_VERSION }} ready to update.\nThe '_embedded' and 'cloned' apk require a new version of Localify to function.\nTo use them, download the included 'Localify.apk' if you did not already. \n**Other Localify versions will NOT work.**"
         tag_name: ${{ env.APK_VERSION }} 
         make_latest: true
+        preserve_order: true
         files: |
-          ${{ env.EMBED_APK }}
-          ${{ env.EMBED_APK_CLONED }}
-          ${{ env.EMBED_APK_CN }}
           ${{ env.LOCALIFY_EN_NAME }}
+          ${{ env.EMBED_APK_CLONED }}
+          ${{ env.EMBED_APK }}
           ${{ env.PATCHED_APK }}
+          ${{ env.EMBED_APK_CN }}
       
         
     
