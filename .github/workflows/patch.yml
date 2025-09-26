@@ -1,7 +1,9 @@
 name: Download and patch
 env:
+  # Global env vars that both jobs might use
   GAME_XAPK_LINK: "https://d.apkpure.com/b/XAPK/com.bandainamcoent.idolmaster_gakuen?version=latest"
   USER_AGENT: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0"
+
 on:
   schedule:
     - cron: 0 18 * * *
@@ -10,55 +12,71 @@ on:
 
 permissions:
   contents: write
-  
+
 jobs:
-  build:
-   
+  check:
     runs-on: ubuntu-latest
+    outputs:
+      continue: ${{ steps.ver_check.outputs.continue }}
+      apk_version: ${{ steps.ver_check.outputs.apk_version }}
+      game_file_base: ${{ steps.ver_check.outputs.game_file_base }}
+      game_xapk_name: ${{ steps.ver_check.outputs.game_xapk_name }}
+      game_apk_name: ${{ steps.ver_check.outputs.game_apk_name }}
+      game_cloned_name: ${{ steps.ver_check.outputs.game_cloned_name }}
 
     steps:
-    - name: Checkout the repo
-      uses: actions/checkout@v5
-      with:
-        fetch-depth: 0
-        fetch-tags: true
+      - name: Checkout the repo
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          fetch-tags: true
 
-    - name: Get latest tag and compare with existing
-      run: |
-          bash ver_check.sh
+      - name: Get latest tag and compare with existing
+        id: ver_check
+        run: bash ver_check.sh
 
-    - name: Download and prepare modules
-      run: |
-          bash download_modules.sh
+  build:
+    runs-on: ubuntu-latest
+    needs: check
+    if: needs.check.outputs.continue == 'true'
+
+    env:
+      APK_VERSION: ${{ needs.check.outputs.apk_version }}
+      GAME_FILE_BASE: ${{ needs.check.outputs.game_file_base }}
+      GAME_XAPK_NAME: ${{ needs.check.outputs.game_xapk_name }}
+      GAME_APK_NAME: ${{ needs.check.outputs.game_apk_name }}
+      GAME_CLONED_NAME: ${{ needs.check.outputs.game_cloned_name }}
+
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v5
+
+      - name: Download and prepare modules
+        run: bash download_modules.sh
           
-    - name: Set up JRE 21
-      uses: actions/setup-java@v4.6.0
-      with:
-          distribution: "zulu"
-          java-version: "21"
-          java-package: "jre"  
+      - name: Set up JRE 21
+        uses: actions/setup-java@v4.6.0
+        with:
+            distribution: "zulu"
+            java-version: "21"
+            java-package: "jre"  
 
-    - name: Prepare cloned APK file
-      run: |
-        bash clone.sh
+      - name: Prepare cloned APK file
+        run: bash clone.sh
 
-    - name: Patch the APK files
-      run: |
-        bash patch.sh
+      - name: Patch the APK files
+        run: bash patch.sh
         
-    - name: Create a Release
-      uses: softprops/action-gh-release@v2
-      with:
-        body: "### Gaku ${{ env.APK_VERSION }} ready to update.\nThe '_embedded' and 'cloned' apk require a new version of Localify to function.\nTo use them, download the included 'Localify.apk' if you did not already. \n**Other Localify versions will NOT work.**"
-        tag_name: ${{ env.APK_VERSION }} 
-        make_latest: true
-        preserve_order: true
-        files: |
-          ${{ env.LOCALIFY_EN_NAME }}
-          ${{ env.EMBED_APK_CLONED }}
-          ${{ env.EMBED_APK }}
-          ${{ env.PATCHED_APK }}
-          ${{ env.EMBED_APK_CN }}
-      
-        
-    
+      - name: Create a Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: "### Gaku ${{ env.APK_VERSION }} ready to update.\nThe '_embedded' and 'cloned' apk require a new version of Localify to function.\nTo use them, download the included 'Localify.apk' if you did not already. \n**Other Localify versions will NOT work.**"
+          tag_name: ${{ env.APK_VERSION }} 
+          make_latest: true
+          preserve_order: true
+          files: |
+            ${{ env.LOCALIFY_EN_NAME }}
+            ${{ env.EMBED_APK_CLONED }}
+            ${{ env.EMBED_APK }}
+            ${{ env.PATCHED_APK }}
+            ${{ env.EMBED_APK_CN }}

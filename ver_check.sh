@@ -15,15 +15,19 @@ echo "Latest app version: $apk_version"
 
 if [ "$LATEST_TAG" != "$apk_version" ] 
 then
+  echo "New version detected. Proceeding."
     {
-    echo "APK_VERSION=$apk_version";
-    echo "GAME_FILE_BASE=$GAME_FILE_BASE";
-    echo "GAME_XAPK_NAME=$GAME_FILE_BASE.xapk";
-    echo "GAME_APK_NAME=$GAME_FILE_BASE.apk";
-    echo "GAME_CLONED_NAME=""$GAME_FILE_BASE""_cloned.apk";
-    } >> "$GITHUB_ENV"
+    echo "continue=true"
+    echo "apk_version=$apk_version"
+    echo "game_file_base=$GAME_FILE_BASE"
+    echo "game_xapk_name=$GAME_FILE_BASE.xapk"
+    echo "game_apk_name=$GAME_FILE_BASE.apk"
+    echo "game_cloned_name=${GAME_FILE_BASE}_cloned.apk"
+    } >> "$GITHUB_OUTPUT"
 else
-    exit 1
+    echo "No new version found. Stopping gracefully."
+    # Set the output variable to 'false' to signal a stop
+    echo "continue=false" >> "$GITHUB_OUTPUT"
 fi
 
 
