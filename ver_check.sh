@@ -23,7 +23,7 @@ then
     echo "GAME_CLONED_NAME=""$GAME_FILE_BASE""_cloned.apk";
     } >> "$GITHUB_ENV"
 else
-    return 1
+    exit 1
 fi
 
 
