@@ -1,10 +1,10 @@
 #!/bin/bash
 
-headers=$(wget -q -S -U "$USER_AGENT" --start-pos 999999999 "$GAME_XAPK_LINK" 2>&1)
+#headers=$(wget -q -S -U "$USER_AGENT" --start-pos 999999999 "$GAME_XAPK_LINK" 2>&1)
+#xapk_name=${headers##*=}
+#apk_version=${xapk_name%_*};apk_version=${apk_version##*_}
 
-xapk_name=${headers##*=}
-
-apk_version=${xapk_name%_*};apk_version=${apk_version##*_}
+apk_version=$(python play_ver_check/app.py)
 
 LATEST_TAG="$(git describe --tags "$(git rev-list --tags --max-count=1)")"
 
@@ -20,7 +20,6 @@ then
     echo "continue=true"
     echo "apk_version=$apk_version"
     echo "game_file_base=$GAME_FILE_BASE"
-    echo "game_xapk_name=$GAME_FILE_BASE.xapk"
     echo "game_apk_name=$GAME_FILE_BASE.apk"
     echo "game_cloned_name=${GAME_FILE_BASE}_cloned.apk"
     } >> "$GITHUB_OUTPUT"
