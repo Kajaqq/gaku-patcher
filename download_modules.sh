@@ -1,7 +1,7 @@
 #!/bin/bash
 
 get_gh_latest() {
-    curl -s https://api.github.com/repos/$1/releases | jq -r '.[0].assets[] | select(.name | endswith(".apk")) | .browser_download_url'
+    curl -s https://api.github.com/repos/$1/releases | jq -r '.[0].assets[] | select(.name | ascii_downcase | endswith(".apk")) | .browser_download_url'
 }
 
 LOCALIFY_CN_LINK=$(get_gh_latest chinosk6/gakuen-imas-localify)
