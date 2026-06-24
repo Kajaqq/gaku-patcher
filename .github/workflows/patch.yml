@@ -8,6 +8,7 @@ env:
 on:
   schedule:
     - cron: 0 18 * * *
+      timezone: "Asia/Tokyo"
   workflow_dispatch:
   push:
 
