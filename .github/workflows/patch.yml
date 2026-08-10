@@ -77,7 +77,7 @@ jobs:
       - name: Create a Release
         uses: softprops/action-gh-release@v2
         with:
-          body: "### Gaku ${{ env.APK_VERSION }} ready to update.\nThe '_embedded' and 'cloned' apk require the included version of Localify to function.\n**Other Localify versions will NOT work.**"
+          body: "### Gaku ${{ env.APK_VERSION }} ready to update.\nThe '_embedded' and 'cloned' apk require the included version of Localify to function.\n**Other Localify versions will NOT work.** ## WARNING: A Localify update was made in the version 3.2.1, if you didn't update your Localify app yet, _remove and reinstall it_ to avoid issues. "
           tag_name: ${{ env.APK_VERSION }} 
           make_latest: true
           preserve_order: true
