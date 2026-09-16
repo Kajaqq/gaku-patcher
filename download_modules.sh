@@ -1,10 +1,14 @@
 #!/bin/bash
 
 get_gh_latest() {
-    curl -s https://api.github.com/repos/$1/releases | jq -r '.[0].assets[] | select(.name | ascii_downcase | endswith(".apk")) | .browser_download_url'
+    local repo="$1"
+    local ext="${2:-.apk}"
+
+    curl -s "https://api.github.com/repos/${repo}/releases" | \
+      jq -r --arg ext "$ext" '.[0].assets[] | select(.name | ascii_downcase | endswith($ext | ascii_downcase)) | .browser_download_url'
 }
 
-LOCALIFY_CN_LINK=$(get_gh_latest chinosk6/gakuen-imas-localify)
+LOCALIFY_CN_LINK=$(get_gh_latest "chinosk6/gakuen-imas-localify")
 LOCALIFY_CN_NAME=LocalifyCN.apk
 
 LOCALIFY_EN_LINK=https://gitea.tendokyu.moe/Maji/gakumas-localify-en/releases/download/latest/Localify.apk
@@ -13,11 +17,12 @@ LOCALIFY_EN_NAME=Localify.apk
 APKEEP_LINK=https://github.com/EFForg/apkeep/releases/latest/download/apkeep-x86_64-unknown-linux-gnu
 APKEEP_NAME=apkeep
 
-APKEDITOR_LINK=https://github.com/REAndroid/APKEditor/releases/download/V1.4.9/APKEditor-1.4.9.jar
+APKEDITOR_LINK=$(get_gh_latest "REAndroid/APKEditor" ".jar")
 APKEDITOR_NAME=APKEditor.jar
 
-LSPATCH_LINK=https://github.com/JingMatrix/LSPatch/releases/latest/download/lspatch.jar
+LSPATCH_LINK=$(get_gh_latest "JingMatrix/LSPatch" "-release.jar")
 LSPATCH_NAME=lspatch.jar
+
 
 aria2c -x4 "$LOCALIFY_CN_LINK" -o $LOCALIFY_CN_NAME
 aria2c -x4 "$LOCALIFY_EN_LINK" -o $LOCALIFY_EN_NAME
