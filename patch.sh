@@ -5,9 +5,9 @@ GAME_EMBEDDED_OLD="$GAME_EMBEDDED_BASE"_CN.apk
 GAME_EMBEDDED_APK="$GAME_EMBEDDED_BASE".apk
 GAME_EMBEDDED_CLONED="$GAME_EMBEDDED_BASE"_cloned.apk
 
-java -jar lspatch.jar -l 2 --manager "$GAME_APK_NAME" -o ls_patched
-java -jar lspatch.jar "$GAME_APK_NAME" -m "$LOCALIFY_EN_NAME" -o localify --force
-java -jar lspatch.jar "$GAME_APK_NAME" -m "$LOCALIFY_CN_NAME" -o localify_cn --force
+java -jar lspatch.jar --manager "$GAME_APK_NAME" -o ls_patched --add-permission REQUEST_INSTALL_PACKAGES
+java -jar lspatch.jar "$GAME_APK_NAME" -m "$LOCALIFY_EN_NAME" -o localify --add-permission REQUEST_INSTALL_PACKAGES --force
+java -jar lspatch.jar "$GAME_APK_NAME" -m "$LOCALIFY_CN_NAME" -o localify_cn --add-permission REQUEST_INSTALL_PACKAGES --force
 
 patched_apk=$(find ./ls_patched/*.apk)
 embed_apk=$(find ./localify/*.apk)
